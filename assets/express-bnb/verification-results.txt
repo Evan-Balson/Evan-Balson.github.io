@@ -1,0 +1,25 @@
+Verification snapshot · 2026-10-07
+
+All eight original JUnit cases were compiled and executed with JDK 23 and JUnit Platform using cached dependencies: six passed and two failed. The passing cases cover booking confirmation, capacity rejection and filtering/booking examples. The notification failures compare an object to a string and call isEmpty on a null unknown-user result.
+
+Four additional probes against unchanged domain methods reproduced cancellation/state mismatches and a negative-room request increasing available capacity above its total. These are separate from the submitted JUnit cases; the run did not validate JavaFX screens or Maven module packaging.
+
+The saved model and original Flask endpoint passed nine contract checks, and the unchanged Java HTTP client returned a valid label. Fresh evaluation returned 100% training accuracy on 40 examples and 40% internal validation accuracy on 10; no independent test set or JavaFX UI assertion was used.
+
+The host ownership predicates are concrete authorization checks, but they do not establish consistent enforcement across every public manager method. Cancellation, terminal-state reuse, positive room counts and owner/role failures need focused regression coverage.
+
+
+Full booking-state verification
+
+Direct booking-state methods — verified source behaviour
+State object | Action | Result | Capacity effect
+PendingState | Confirm, enough rooms | Confirmed | Subtract requested rooms
+PendingState | Confirm, insufficient rooms | Throws; remains Pending | None
+PendingState | cancel(booking) | Canceled | None
+PendingState | cancel(accommodation, booking) | Canceled | Adds rooms; incorrect for an unreserved request
+confirmedState | Cancel | Canceled | Release booked rooms
+confirmedState | Complete | Completed | Release booked rooms
+CanceledState | Reserve / confirm / cancel / complete | Throws | None
+completedState | Reserve / confirm / cancel / complete | Logs / no transition | None
+
+Two state layers make cancellation inconsistent. Host and guest cancellation delegate through accommodation reservation state, whereas bookingInfo can delegate through booking state. Probes reproduced a pending cancellation that remained Pending and another that released rooms reserved by a different confirmed booking. Public setters and status-based constructor choices can also make status and state disagree. A constructor status of Canceled initializes PendingState, while Confirmed initializes the accommodation-level bookedState.
