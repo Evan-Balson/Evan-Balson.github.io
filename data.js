@@ -7,6 +7,7 @@ window.portfolio = {
   "projects": [
     {
       "id": "express-bnb",
+      "github": "https://github.com/Evan-Balson/Express-BnB-CNN-Model--SD3-Sprint3",
       "title": "Express BnB",
       "category": "Software Engineering",
       "kind": "booking",
@@ -340,12 +341,6 @@ window.portfolio = {
               "label": "**Application screenshots**",
               "description": "Guest, host, administrator and image-search workflows.",
               "url": "#case-section-7"
-            },
-            {
-              "type": "resource",
-              "label": "**Supporting implementation evidence**",
-              "description": "Booking behaviour, integration details and technical verification.",
-              "url": "assets/express-bnb/verification-results.txt"
             }
           ]
         }
